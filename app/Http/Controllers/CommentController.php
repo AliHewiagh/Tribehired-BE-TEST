@@ -27,7 +27,6 @@ class CommentController extends Controller
         $query = collect($request->query());
 
 
-         // Get all comments
         $comments = $this->index();
 
 
@@ -35,7 +34,12 @@ class CommentController extends Controller
             return [];
         }
 
-        // Get all comment field
+        // In case no parameters, return all comments
+        if(count($query) < 1) {
+            return $comments;
+        }
+
+
         $felids = collect($comments[0])->keys();
 
 
