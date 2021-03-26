@@ -18,6 +18,11 @@ class PostController extends Controller
     }
 
 
+    /**
+     * Get all comments from CommentController
+     *
+     * Received comments grouped by postId
+     */
     public function getComments() {
 
         $comments = $this->CommentController->index();
@@ -58,40 +63,6 @@ class PostController extends Controller
 
         return $topPosts;
     }
-
-    private function getCommentCount($post_id) {
-        // $this->groupBy($post_id);
-        $grouped = $post_id->groupBy('post_id');
-        logger($grouped);
-        return 8;
-    }
-
-
-
-    private function groupBy($comments) {
-
-        // logger($comments);
-
-        $result = array_reduce($comments, function($carry, $item) {
-
-            logger($item['postId']);
-            // logger($item);
-            // logger("MMMMMMM");
-        //     logger("==========55===");
-            if(!isset($carry[$item['postId']])) {
-                // logger("rrrrr");
-            //     $carry[$item['id']] = $item;
-            // } else {
-            //     $carry[$item['id']] += $item->val;
-            }
-        //     // return $carry;
-        });
-
-        // $result = array_values($result);
-        // logger("=============");
-        // logger($result);
-        // logger("=============");
-      }
 
     /**
      * Store a newly created resource in storage.
