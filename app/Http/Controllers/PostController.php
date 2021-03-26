@@ -11,21 +11,22 @@ class PostController extends Controller
 {
 
 
-    protected $CommentController;
-    public function __construct(CommentController $CommentController)
+    protected $commentController;
+
+
+    public function __construct(CommentController $commentController)
     {
-        $this->CommentController = $CommentController;
+        $this->commentController = $commentController;
     }
 
 
     /**
      * Get all comments from CommentController
      *
-     * Received comments grouped by postId
      */
     public function getComments() {
 
-        $comments = $this->CommentController->index();
+        $comments = $this->commentController->index();
         return $comments;
 
     }
@@ -44,7 +45,9 @@ class PostController extends Controller
 
 
         // Get all comments from CommentController
-        $comments = $this->getComments();
+        // Group comments by postId
+        $comments = $this->getComments()->groupBy('postId');
+
 
         // Structure post and get number of comments of the post
         $modified_posts = $posts->map(function ($item) use ($comments){
@@ -62,50 +65,5 @@ class PostController extends Controller
 
 
         return $topPosts;
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

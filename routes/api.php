@@ -21,6 +21,9 @@ Route::get('/posts/top', [PostController::class, 'index']);
 
 Route::get('/comments', [CommentController::class, 'index']);
 
+
+Route::get('/comments/search', [CommentController::class, 'filter']);
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });

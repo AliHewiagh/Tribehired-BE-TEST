@@ -17,61 +17,37 @@ class CommentController extends Controller
 
         // Get comments from the external api
         $comments = Http::get('https://jsonplaceholder.typicode.com/comments')->collect();
-
-        // group comments by postId
-        $grouped = $comments->groupBy('postId');
-
-        return $grouped;
+        return $comments;
     }
 
 
+    public function filter(Request $request) {
+
+        // Get request parameters as array and convert to collection
+        $query = collect($request->query());
 
 
+         // Get all comments
+        $comments = $this->index();
 
 
+        if(count($comments) < 1) {
+            return [];
+        }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        // Get all comment field
+        $felids = collect($comments[0])->keys();
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+        $filteredComments = collect();
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+
+        foreach ($felids as $felid) {
+            if($query->has($felid)) {
+                $filteredComments->push($comments->where($felid, $query[$felid]));
+            }
+        }
+
+        return $filteredComments;
     }
 }
